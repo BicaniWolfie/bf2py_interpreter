@@ -1,5 +1,2 @@
 # bf2py_interpreter
-
-This is a little project I for some reason decided to torture myself with
-
-The aim of this project is to create a "Brainfuck" intepreter in Python
+"bf2py" is an intepreter of the programming language "Brainf**k", written in Python, which has the purpose of translating it into readable text in a terminal.
