@@ -44,16 +44,19 @@ print("List of ]: " + str(while_end))
 index_pointer = 0
 b = 0
 buffer = [0] * len(code_string)
-char_buffer = [''] * len(code_string)
+char_buffer = []
 text_buffer = ""
 skip_step = True
 
-while (b <= len(code_string)):
+while (b < len(code_string)):
     
     if(skip_step == False):
         b += 1
     else:
         skip_step = False
+    if b == len(code_string):
+        break
+
     # A definition of instructions for each of the 8 symbols in "Brainfuck"
     # print(b)
     if code_string[b] == '[':
@@ -83,12 +86,10 @@ while (b <= len(code_string)):
         # print("-")
         buffer[index_pointer] -= 1
     elif(code_string[b] == '.'):
-        char_buffer[index_pointer] = chr(ord('@') + buffer[index_pointer])
-        buffer[index_pointer] = 0
+        char_buffer.append(chr(buffer[index_pointer]))
         print("Updated Char Buffer: "  + str(char_buffer))
     elif(code_string[b] == ','):
         buffer[index_pointer] = ord(char_buffer[index_pointer])
-
 
 ## Decoding of the buffer into a temporary text buffer, which gets printed into the console
 for i in range (len(char_buffer)):
