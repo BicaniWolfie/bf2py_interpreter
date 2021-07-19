@@ -32,5 +32,5 @@ def brainfuck(code):
         if buffer[i] != None:
             text_buffer + chr(buffer[i])
     print(text_buffer)
-
+    
 brainfuck(code_string)
