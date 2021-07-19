@@ -8,6 +8,8 @@ def brainfuck(code):
     text_buffer = ""
     
     for i in range (len(code)):
+
+        # A definition of instructions for each of the 8 symbols in "Brainfuck"
         if(code[i] == '>'):
             index_pointer += 1
         elif(code[i] == '<'):
@@ -25,9 +27,10 @@ def brainfuck(code):
         elif(code[i] == ']'):
             return
 
+    ## Decoding of the buffer into a temporary text buffer, which gets printed into the console
     for i in range (len(buffer)):
         if buffer[i] != None:
             text_buffer + chr(buffer[i])
     print(text_buffer)
-        
+
 brainfuck(code_string)
