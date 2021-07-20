@@ -1,6 +1,6 @@
 # Initial Variables
 debug = False
-file_name = "Test Files/hw2.bf"
+file_name = "Sample Files/hw2.bf"
 code_string = open(file_name, 'r').read()
 
 if debug == True:
