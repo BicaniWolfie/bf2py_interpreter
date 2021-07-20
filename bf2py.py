@@ -1,94 +1,87 @@
-import bisect
-
-file_name = "helloworld.bf"
+# Initial Variables
+debug = False
+file_name = "hw1.bf"
 code_string = open(file_name, 'r').read()
-print("Converting: " + code_string)
-# ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
 
+if debug == True:
+    print("Coverting: " + code_string)
 
-# Defining Variables for the loop
-while_start = []
-while_end = []
+# Creation of a sorted list of positions "while_sort", in an alternating pattern as follows:
+# [starting while-bracket, ending while-bracket, starting while-bracket, ending while-bracket, ...]
+while_sorted = []
+
+# Creation of a temporary array used for the operation of sorting the list
+e = []
 
 for i in range(len(code_string)):
     if(code_string[i] == '['):
-        while_start.append(i)
-    elif(code_string[i] == ']'):
-        while_end.append(i)
+        e.append(i)
+    if(code_string[i] == ']'):
+        while_sorted.append(e[-1])
+        while_sorted.append(i)
+        e.pop();
 
-e = while_start.copy();
-f = while_end.copy();
-# while_sort = []
+if debug == True:
+    print("Sorted List: " + str(while_sorted))
 
-while_sort = [14,33,43,45,8,48]
-
-# for i in range(len(e) - 1):
-    
-#     a = bisect.bisect_left(e, f[i]) - 1
-
-#     while_sort.append(e[a])
-#     while_sort.append(f[i])
-#     e.remove(e[a])
-#     f.remove(f[i])
-
-# while_sort.append(e[0])
-# while_sort.append(f[0])
-# e.remove(e[0])
-# f.remove(f[0])
-
-print(while_sort)
-
-print("List of [: " + str(while_start))
-print("List of ]: " + str(while_end))
-
+# This is the main interpreter of the code. Variables for this loop will be defined as follows:
 index_pointer = 0
-b = 0
+b = -1
 buffer = [0] * len(code_string)
-char_buffer = [''] * len(code_string)
+char_buffer = []
 text_buffer = ""
-skip_step = True
 
-while (b <= len(code_string)):
+while (b < len(code_string)):
     
-    if(skip_step == False):
-        b += 1
-    else:
-        skip_step = False
-    # A definition of instructions for each of the 8 symbols in "Brainfuck"
-    # print(b)
+    # Program increments the current position in the code by 1
+    b += 1
+    
+    # The loop breaks if it has reached the end of the code 
+    if b == len(code_string):
+        break
+
+    # A definition of the instructions for each of the 8 symbols used by "Brainfuck"
+    # First the loop checks for any potential while-loops in Brainfuck
     if code_string[b] == '[':
         if(buffer[index_pointer] == 0):
-            a = while_sort.index(b)
-            print(str(b) + " is a while start going to to position " + str(while_sort[a + 1]))
-            print("Value Index: " + str(index_pointer) + " Index Value: " + str(buffer[index_pointer]))
-            b = while_sort[a + 1]
-            # skip_step = True
+            a = while_sorted.index(b)
+            b = while_sorted[a + 1]
+            if debug == True:
+                print(str(b) + " is a while start going to to position " + str(while_sorted[a + 1]))
+                print("Value Index: " + str(index_pointer) + " Index Value: " + str(buffer[index_pointer]))
     elif code_string[b] == ']':
         if(buffer[index_pointer] != 0):
-            a = while_sort.index(b)
-            print(str(b) + " is a while end going to position " + str(while_sort[a - 1]))
-            print("Value Index: " + str(index_pointer) + " Index Value: " + str(buffer[index_pointer]))
-            b = while_sort[a - 1]
-            # skip_step = True
+            a = while_sorted.index(b)
+            b = while_sorted[a - 1]
+            if debug == True:
+                print(str(b) + " is a while end going to position " + str(while_sorted[a - 1]))
+                print("Value Index: " + str(index_pointer) + " Index Value: " + str(buffer[index_pointer]))
+    
+    # Next comes instructions for each of the other 6 operations
     elif(code_string[b] == '>'):
-        # print(">")
+        if debug == True:
+            print(">")
         index_pointer += 1
     elif(code_string[b] == '<'):
-        # print("<")
+        if debug == True:
+            print("<")
         index_pointer -= 1
     elif(code_string[b] == '+'):
-        # print("+")
+        if debug == True:
+            print("+")
         buffer[index_pointer] += 1
     elif(code_string[b] == '-'):
-        # print("-")
+        if debug == True:
+            print("-")
         buffer[index_pointer] -= 1
     elif(code_string[b] == '.'):
-        char_buffer[index_pointer] = chr(ord('@') + buffer[index_pointer])
-        buffer[index_pointer] = 0
-        print("Updated Char Buffer: "  + str(char_buffer))
+        char_buffer.append(chr(buffer[index_pointer]))
+        if debug == True:
+            print("Updated Char Buffer: "  + str(char_buffer))
     elif(code_string[b] == ','):
         buffer[index_pointer] = ord(char_buffer[index_pointer])
-
+        if debug == True:
+            print("Updated Char Buffer: "  + str(char_buffer))
 
 ## Decoding of the buffer into a temporary text buffer, which gets printed into the console
 for i in range (len(char_buffer)):
